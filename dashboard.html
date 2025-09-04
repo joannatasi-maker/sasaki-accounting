@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主控制台 - 佐佐木賢會計系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+        }
+        body {
+            background: #f3f4f6;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563EB, #10B981);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .nav-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .nav-right {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background: #f3f4f6;
+        }
+        .btn-primary {
+            background: #2563EB;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome {
+            background: linear-gradient(135deg, #2563EB, #10B981);
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .welcome h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .welcome p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            color: #2563EB;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .modules {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .modules h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .module-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .module-item:hover {
+            background: #f0f9ff;
+            border-color: #2563EB;
+            transform: translateY(-2px);
+        }
+        .module-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .module-name {
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-info {
+            background: #f9fafb;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">佐</div>
+            <div class="nav-title">佐佐木賢會計系統</div>
+        </div>
+        <div class="nav-right">
+            <button class="btn" onclick="history.back()">🔙 返回</button>
+            <button class="btn btn-primary" onclick="location.reload()">🏠 主目錄</button>
+            <span class="user-info">👤 管理員</span>
+            <button class="btn" onclick="logout()">登出</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome">
+            <h1>歡迎回來！👋</h1>
+            <p>今天是個美好的一天，讓我們開始工作吧！</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">本月營收</div>
+                    <div class="stat-value">NT$ 2.5M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">進行中專案</div>
+                    <div class="stat-value">12</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">待收帳款</div>
+                    <div class="stat-value">NT$ 850K</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">待簽核</div>
+                    <div class="stat-value">8</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modules">
+            <h2>功能模組</h2>
+            <div class="module-grid">
+                <div class="module-item" onclick="openModule('customer')">
+                    <div class="module-icon">👥</div>
+                    <div class="module-name">客戶管理</div>
+                </div>
+                <div class="module-item" onclick="openModule('project')">
+                    <div class="module-icon">📋</div>
+                    <div class="module-name">專案管理</div>
+                </div>
+                <div class="module-item" onclick="openModule('vendor')">
+                    <div class="module-icon">🏭</div>
+                    <div class="module-name">廠商管理</div>
+                </div>
+                <div class="module-item" onclick="openModule('finance')">
+                    <div class="module-icon">💰</div>
+                    <div class="module-name">財務管理</div>
+                </div>
+                <div class="module-item" onclick="openModule('employee')">
+                    <div class="module-icon">👔</div>
+                    <div class="module-name">員工管理</div>
+                </div>
+                <div class="module-item" onclick="openModule('approval')">
+                    <div class="module-icon">✍️</div>
+                    <div class="module-name">電子簽核</div>
+                </div>
+                <div class="module-item" onclick="openModule('report')">
+                    <div class="module-icon">📊</div>
+                    <div class="module-name">報表分析</div>
+                </div>
+                <div class="module-item" onclick="openModule('settings')">
+                    <div class="module-icon">⚙️</div>
+                    <div class="module-name">系統設定</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modules">
+            <h2>快速操作</h2>
+            <div class="module-grid">
+                <div class="module-item" onclick="quickAction('invoice')">
+                    <div class="module-icon">📝</div>
+                    <div class="module-name">開立發票</div>
+                </div>
+                <div class="module-item" onclick="quickAction('payment')">
+                    <div class="module-icon">💵</div>
+                    <div class="module-name">收款登記</div>
+                </div>
+                <div class="module-item" onclick="quickAction('expense')">
+                    <div class="module-icon">💸</div>
+                    <div class="module-name">支出記錄</div>
+                </div>
+                <div class="module-item" onclick="quickAction('newproject')">
+                    <div class="module-icon">➕</div>
+                    <div class="module-name">新增專案</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 檢查是否已登入
+        if (!localStorage.getItem('user')) {
+            alert('請先登入！');
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            if (confirm('確定要登出嗎？')) {
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
+        }
+
+        function openModule(module) {
+            alert('即將開啟：' + module + ' 模組');
+        }
+
+        function quickAction(action) {
+            alert('執行快速操作：' + action);
+        }
+    </script>
+</body>
+</html>

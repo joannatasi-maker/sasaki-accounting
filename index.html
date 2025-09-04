@@ -1,0 +1,204 @@
+太好了！現在我給您登入頁面的完整程式碼。
+📋 步驟：貼上程式碼
+
+先確認記事本是空的（如果有內容，按 Ctrl+A 全選，再按 Delete 刪除）
+複製下面這整段程式碼：
+
+html<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563EB">
+    <title>佐佐木賢會計系統 - 登入</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+        }
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 42px;
+            font-weight: bold;
+        }
+        .company-name {
+            font-size: 24px;
+            color: #1f2937;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .company-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #2563EB;
+            background: white;
+        }
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37,99,235,0.3);
+        }
+        .quick-login {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .quick-title {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .quick-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .quick-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .quick-btn:hover {
+            background: #f3f4f6;
+            border-color: #2563EB;
+        }
+        .error-msg {
+            display: none;
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo">佐</div>
+            <div class="company-name">佐佐木賢室內裝修設計</div>
+            <div class="company-subtitle">會計管理系統 v1.0</div>
+        </div>
+        
+        <div id="errorMsg" class="error-msg">帳號或密碼錯誤</div>
+        
+        <form onsubmit="return doLogin(event)">
+            <div class="form-group">
+                <label class="form-label">帳號</label>
+                <input type="text" class="form-input" id="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">密碼</label>
+                <input type="password" class="form-input" id="password" required>
+            </div>
+            
+            <button type="submit" class="login-button">登入系統</button>
+        </form>
+        
+        <div class="quick-login">
+            <div class="quick-title">快速測試登入</div>
+            <div class="quick-buttons">
+                <button class="quick-btn" onclick="quickLogin('admin')">老闆</button>
+                <button class="quick-btn" onclick="quickLogin('user')">員工</button>
+                <button class="quick-btn" onclick="quickLogin('demo')">示範</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function doLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === '123456') {
+                localStorage.setItem('user', username);
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 3000);
+            }
+            return false;
+        }
+        
+        function quickLogin(type) {
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = '123456';
+            doLogin(event);
+        }
+    </script>
+</body>
+</html>
+
