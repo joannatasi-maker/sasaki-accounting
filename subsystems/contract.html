@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專案管理系統 - 合約管理子系統 | 佐佐木賢室內裝修設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+        }
+        
+        /* 頂部導航欄 */
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #64b5f6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .system-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .system-subtitle {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+        
+        .nav-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            padding: 8px 16px;
+            border: 1px solid #e1e8ed;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            color: #34495e;
+        }
+        
+        .nav-btn:hover {
+            background: #f8f9fa;
+            border-color: #90caf9;
+        }
+        
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #66bb6a, #81c784);
+            color: white;
+            border: none;
+        }
+        
+        .nav-btn.primary:hover {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+        }
+        
+        .nav-btn.back {
+            background: linear-gradient(135deg, #64b5f6, #90caf9);
+            color: white;
+            border: none;
+        }
+        
+        /* 系統連結指示器 */
+        .system-connector {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            max-width: 200px;
+        }
+        
+        .connector-title {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .connected-system {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            font-size: 11px;
+            color: #546e7a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .connected-system:hover {
+            background: #f5f5f5;
+            border-radius: 6px;
+        }
+        
+        .connection-status {
+            width: 6px;
+            height: 6px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* 主要內容區 */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        
+        /* 側邊欄 */
+        .sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .sidebar-title {
+            font-size: 14px;
+            color: #37474f;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-subtitle {
+            font-size: 11px;
+            color: #78909c;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-section {
+            margin-bottom: 25px;
+        }
+        
+        .menu-title {
+            padding: 0 20px;
+            font-size: 11px;
+            color: #90a4ae;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #546e7a;
+            font-size: 14px;
+        }
+        
+        .menu-item:hover {
+            background: #f5f5f5;
+            color: #42a5f5;
+        }
+        
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(66, 165, 245, 0.1), transparent);
+            color: #1e88e5;
+            border-left: 3px solid #42a5f5;
+        }
+        
+        .menu-icon {
+            font-size: 18px;
+        }
+        
+        /* 內容區 */
+        .content-area {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+        
+        /* 頁面標題區 */
+        .page-header {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        .breadcrumb {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-bottom: 10px;
+        }
+        
+        .breadcrumb span {
+            color: #42a5f5;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* 統計卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .stat-icon.blue { background: linear-gradient(135deg, #64b5f6, #90caf9); }
+        .stat-icon.green { background: linear-gradient(135deg, #81c784, #a5d6a7); }
+        .stat-icon.yellow { background: linear-gradient(135deg, #ffb74d, #ffcc80); }
+        .stat-icon.teal { background: linear-gradient(135deg, #4db6ac, #80cbc4); }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+        
+        /* 資料表格 */
+        .data-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #66bb6a, #81c784);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #eceff1;
+            color: #546e7a;
+        }
+        
+        .btn-secondary:hover {
+            background: #cfd8dc;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: #f5f5f5;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            color: #607d8b;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #546e7a;
+        }
+        
+        .data-table tr:hover {
+            background: #fafafa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .status-active { background: #e8f5e9; color: #2e7d32; }
+        .status-draft { background: #e3f2fd; color: #1565c0; }
+        .status-pending { background: #fff3e0; color: #e65100; }
+        .status-expired { background: #ffebee; color: #c62828; }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #78909c;
+            font-size: 18px;
+            padding: 4px;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            color: #42a5f5;
+            transform: scale(1.1);
+        }
+        
+        /* 標籤頁 */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #7f8c8d;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: #546e7a;
+        }
+        
+        .tab.active {
+            color: #42a5f5;
+            border-bottom-color: #42a5f5;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 表單樣式 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #546e7a;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #42a5f5;
+            box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+        }
+        
+        /* 模態框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #90a4ae;
+        }
+        
+        /* API 連接狀態 */
+        .api-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+        }
+        
+        .api-indicator {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">專</div>
+            <div>
+                <span class="system-title">專案管理系統</span>
+                <span class="system-subtitle">合約管理子系統</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="syncData()">🔄 同步資料</button>
+            <button class="nav-btn back" onclick="goToProjectSystem()">返回專案管理</button>
+            <button class="nav-btn primary" onclick="showNewContractModal()">+ 新增合約</button>
+        </div>
+    </nav>
+
+    <!-- 系統連結指示器 -->
+    <div class="system-connector">
+        <div class="connector-title">子系統連結狀態</div>
+        <div class="connected-system">
+            <div class="connection-status"></div>
+            <span>工程進度子系統</span>
+        </div>
+        <div class="connected-system">
+            <div class="connection-status"></div>
+            <span>廠商報價子系統</span>
+        </div>
+        <div class="connected-system">
+            <div class="connection-status"></div>
+            <span>材料庫存子系統</span>
+        </div>
+        <div class="connected-system">
+            <div class="connection-status"></div>
+            <span>品質管理子系統</span>
+        </div>
+        <div class="connected-system">
+            <div class="connection-status"></div>
+            <span>財務會計系統</span>
+        </div>
+    </div>
+
+    <!-- 主要內容區 -->
+    <div class="main-container">
+        <!-- 側邊欄 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">合約管理功能</div>
+                <div class="sidebar-subtitle">專案管理系統 v2.0</div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <div class="menu-title">合約管理</div>
+                    <div class="menu-item active" onclick="showSection('dashboard')">
+                        <span class="menu-icon">📊</span>
+                        <span>總覽儀表板</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('contracts')">
+                        <span class="menu-icon">📋</span>
+                        <span>合約清單</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('templates')">
+                        <span class="menu-icon">📝</span>
+                        <span>合約範本</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('approval')">
+                        <span class="menu-icon">✅</span>
+                        <span>簽核流程</span>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">付款管理</div>
+                    <div class="menu-item" onclick="showSection('payment')">
+                        <span class="menu-icon">💰</span>
+                        <span>付款排程</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('invoice')">
+                        <span class="menu-icon">🧾</span>
+                        <span>發票管理</span>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">提醒與報表</div>
+                    <div class="menu-item" onclick="showSection('alerts')">
+                        <span class="menu-icon">🔔</span>
+                        <span>到期提醒</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('changes')">
+                        <span class="menu-icon">📝</span>
+                        <span>變更記錄</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('reports')">
+                        <span class="menu-icon">📈</span>
+                        <span>合約報表</span>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-title">系統整合</div>
+                    <div class="menu-item" onclick="showSection('integration')">
+                        <span class="menu-icon">🔗</span>
+                        <span>資料連結</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('api')">
+                        <span class="menu-icon">⚙️</span>
+                        <span>API設定</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 內容區 -->
+        <main class="content-area">
+            <!-- 總覽儀表板 -->
+            <section id="dashboard" class="section active">
+                <div class="page-header">
+                    <div class="breadcrumb">專案管理系統 > <span>合約管理子系統</span></div>
+                    <h1 class="page-title">合約管理總覽</h1>
+                    <p class="page-subtitle">即時監控所有合約狀態與關鍵指標</p>
+                </div>
+
+                <!-- 統計卡片 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">📋</div>
+                        <div class="stat-info">
+                            <div class="stat-value">42</div>
+                            <div class="stat-label">執行中合約</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">💰</div>
+                        <div class="stat-info">
+                            <div class="stat-value">NT$ 28.5M</div>
+                            <div class="stat-label">合約總值</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">⏰</div>
+                        <div class="stat-info">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">即將到期</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon teal">✏️</div>
+                        <div class="stat-info">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">待簽核</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最新合約列表 -->
+                <div class="data-card">
+                    <div class="card-header">
+                        <h2 class="card-title">最新合約動態</h2>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary">篩選</button>
+                            <button class="btn btn-primary">查看全部</button>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>合約編號</th>
+                                <th>專案編號</th>
+                                <th>專案名稱</th>
+                                <th>客戶</th>
+                                <th>合約金額</th>
+                                <th>簽約日期</th>
+                                <th>到期日期</th>
+                                <th>狀態</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>CTR-2025-001</strong></td>
+                                <td>PRJ-2025-001</td>
+                                <td>信義區豪宅裝修</td>
+                                <td>張先生</td>
+                                <td>NT$ 5,800,000</td>
+                                <td>2025-01-15</td>
+                                <td>2025-06-30</td>
+                                <td><span class="status-badge status-active">執行中</span></td>
+                                <td class="table-actions">
+                                    <button class="action-btn" title="檢視">👁️</button>
+                                    <button class="action-btn" title="編輯">✏️</button>
+                                    <button class="action-btn" title="連結專案">🔗</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>CTR-2025-002</strong></td>
+                                <td>PRJ-2025-002</td>
+                                <td>內湖辦公室設計</td>
+                                <td>科技公司</td>
+                                <td>NT$ 3,200,000</td>
+                                <td>2025-02-01</td>
+                                <td>2025-05-15</td>
+                                <td><span class="status-badge status-pending">簽核中</span></td>
+                                <td class="table-actions">
+                                    <button class="action-btn" title="檢視">👁️</button>
+                                    <button class="action-btn" title="編輯">✏️</button>
+                                    <button class="action-btn" title="連結專案">🔗</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>CTR-2025-003</strong></td>
+                                <td>PRJ-2025-003</td>
+                                <td>大安區住宅翻新</td>
+                                <td>林女士</td>
+                                <td>NT$ 2,100,000</td>
+                                <td>2025-01-20</td>
+                                <td>2025-04-20</td>
+                                <td><span class="status-badge status-draft">草稿</span></td>
+                                <td class="table-actions">
+                                    <button class="action-btn" title="檢視">👁️</button>
+                                    <button class="action-btn" title="編輯">✏️</button>
+                                    <button class="action-btn" title="連結專案">🔗</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 付款期程追蹤 -->
+                <div class="data-card">
+                    <div class="card-header">
+                        <h2 class="card-title">本月付款排程</h2>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary">匯出</button>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>付款日期</th>
+                                <th>合約編號</th>
+                                <th>專案編號</th>
+                                <th>付款項目</th>
+                                <th>應付金額</th>
+                                <th>付款狀態</th>
+                                <th>連結系統</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-03-05</td>
+                                <td>CTR-2025-001</td>
+                                <td>PRJ-2025-001</td>
+                                <td>第二期款 (30%)</td>
+                                <td>NT$ 1,740,000</td>
+                                <td><span class="status-badge status-pending">待付款</span></td>
+                                <td><button class="action-btn" title="連結財務系統">💳</button></td>
+                            </tr>
+                            <tr>
+                                <td>2025-03-10</td>
+                                <td>CTR-2025-004</td>
+                                <td>PRJ-2025-004</td>
+                                <td>簽約金</td>
+                                <td>NT$ 600,000</td>
+                                <td><span class="status-badge status-pending">待付款</span></td>
+                                <td><button class="action-btn" title="連結財務系統">💳</button></td>
+                            </tr>
+                            <tr>
+                                <td>2025-03-15</td>
+                                <td>CTR-2025-002</td>
+                                <td>PRJ-2025-002</td>
+                                <td>材料預付款</td>
+                                <td>NT$ 960,000</td>
+                                <td><span class="status-badge status-draft">未確認</span></td>
+                                <td><button class="action-btn" title="連結財務系統">💳</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 其他區段（隱藏） -->
+            <section id="contracts" class="section" style="display: none;">
+                <div class="page-header">
+                    <div class="breadcrumb">專案管理系統 > 合約管理子系統 > <span>合約清單</span></div>
+                    <h1 class="page-title">合約清單</h1>
+                    <p class="page-subtitle">管理所有合約文件與狀態</p>
+                </div>
+                
+                <!-- 標籤頁 -->
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab(event, 'all-contracts')">全部合約</div>
+                    <div class="tab" onclick="switchTab(event, 'active-contracts')">執行中</div>
+                    <div class="tab" onclick="switchTab(event, 'pending-contracts')">待簽核</div>
+                    <div class="tab" onclick="switchTab(event, 'expired-contracts')">已到期</div>
+                </div>
+                
+                <div class="tab-content active" id="all-contracts">
+                    <!-- 合約列表內容 -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h2 class="card-title">所有合約</h2>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary">進階搜尋</button>
+                                <button class="btn btn-primary" onclick="showNewContractModal()">+ 新增合約</button>
+                            </div>
+                        </div>
+                        <!-- 合約資料表格 -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 新增合約模態框 -->
+    <div id="newContractModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">新增合約</h2>
+                <button class="close-btn" onclick="closeModal('newContractModal')">×</button>
+            </div>
+            
+            <form id="contractForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">合約編號</label>
+                        <input type="text" class="form-input" value="CTR-2025-" placeholder="自動產生">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">關聯專案</label>
+                        <select class="form-input">
+                            <option>選擇專案...</option>
+                            <option>PRJ-2025-001 信義區豪宅裝修</option>
+                            <option>PRJ-2025-002 內湖辦公室設計</option>
+                            <option>PRJ-2025-003 大安區住宅翻新</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">客戶名稱</label>
+                        <input type="text" class="form-input" placeholder="輸入客戶名稱">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">合約類型</label>
+                        <select class="form-input">
+                            <option>設計合約</option>
+                            <option>工程合約</option>
+                            <option>設計+工程合約</option>
+                            <option>顧問合約</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">合約金額</label>
+                        <input type="number" class="form-input" placeholder="輸入金額">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">付款條件</label>
+                        <select class="form-input">
+                            <option>3-3-3-1 (簽約30%-開工30%-期中30%-完工10%)</option>
+                            <option>5-5 (簽約50%-完工50%)</option>
+                            <option>2-3-3-2</option>
+                            <option>自訂</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">簽約日期</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">到期日期</label>
+                        <input type="date" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">合約範本</label>
+                    <select class="form-input">
+                        <option>選擇範本...</option>
+                        <option>標準設計合約範本</option>
+                        <option>標準工程合約範本</option>
+                        <option>商業空間合約範本</option>
+                        <option>住宅空間合約範本</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">備註說明</label>
+                    <textarea class="form-input" rows="4" placeholder="輸入備註..."></textarea>
+                </div>
+                
+                <div class="action-buttons" style="justify-content: flex-end; margin-top: 25px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('newContractModal')">取消</button>
+                    <button type="submit" class="btn btn-primary">建立合約</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- API 連接狀態 -->
+    <div class="api-status">
+        <div class="api-indicator"></div>
+        <span>系統連線正常</span>
+    </div>
+
+    <script>
+        // 顯示區段
+        function showSection(sectionId) {
+            // 隱藏所有區段
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // 顯示選中的區段
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // 更新選單狀態
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.menu-item').classList.add('active');
+        }
+        
+        // 切換標籤頁
+        function switchTab(event, tabId) {
+            // 更新標籤狀態
+            event.target.parentElement.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新內容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+        
+        // 顯示新增合約模態框
+        function showNewContractModal() {
+            document.getElementById('newContractModal').classList.add('active');
+        }
+        
+        // 關閉模態框
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        // 同步資料
+        function syncData() {
+            alert('正在同步資料...\n\n已連結子系統：\n- 工程進度子系統 ✓\n- 廠商報價子系統 ✓\n- 材料庫存子系統 ✓\n- 品質管理子系統 ✓\n- 財務會計系統 ✓\n\n資料同步完成！');
+        }
+        
+        // 連結到其他子系統
+        function goToProgressSystem() {
+            window.location.href = './progress.html';
+        }
+        
+        function goToVendorSystem() {
+            window.location.href = './vendor.html';
+        }
+        
+        function goToInventorySystem() {
+            window.location.href = './inventory.html';
+        }
+        
+        function goToQualitySystem() {
+            window.location.href = './quality.html';
+        }
+        
+        // 返回專案管理系統
+        function goToProjectSystem() {
+            if (confirm('確定要返回專案管理系統嗎？')) {
+                alert('返回專案管理系統主頁...\n\n佐佐木賢室內裝修設計');
+            }
+        }
+        
+        // 回到主目錄
+        function goToMainDirectory() {
+            if (confirm('確定要回到主目錄嗎？')) {
+                alert('返回主目錄...\n\n佐佐木賢室內裝修設計會計系統\n\n系統模組：\n• 客戶管理\n• 專案管理\n• 財務管理\n• 報表分析');
+                // 實際部署時改為：
+                // window.location.href = '/index.html';
+            }
+        }
+        
+        // 表單提交
+        document.getElementById('contractForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('合約建立成功！\n\n系統將自動：\n1. 建立專案關聯\n2. 設定付款排程\n3. 通知相關人員\n4. 同步至其他子系統');
+            closeModal('newContractModal');
+        });
+        
+        // 專案管理系統 API 介面
+        const ProjectSystemAPI = {
+            // 取得專案資料（從專案管理主系統）
+            getProjectData: function(projectId) {
+                return {
+                    projectId: projectId,
+                    projectName: '信義區豪宅裝修',
+                    client: '張先生',
+                    budget: 5800000,
+                    startDate: '2025-01-15',
+                    endDate: '2025-06-30',
+                    status: 'active'
+                };
+            },
+            
+            // 同步至工程進度子系統
+            syncToProgress: function(contractData) {
+                console.log('同步合約資料至工程進度子系統:', contractData);
+                return { success: true, message: '工程進度已更新' };
+            },
+            
+            // 同步至廠商報價子系統
+            syncToVendor: function(contractData) {
+                console.log('同步合約資料至廠商報價子系統:', contractData);
+                return { success: true, message: '廠商資料已同步' };
+            },
+            
+            // 同步至材料庫存子系統
+            syncToInventory: function(contractData) {
+                console.log('同步合約資料至材料庫存子系統:', contractData);
+                return { success: true, message: '材料需求已更新' };
+            },
+            
+            // 同步至品質管理子系統
+            syncToQuality: function(contractData) {
+                console.log('同步合約資料至品質管理子系統:', contractData);
+                return { success: true, message: '品質標準已設定' };
+            },
+            
+            // 同步至財務會計系統
+            syncToFinance: function(contractData) {
+                console.log('同步合約資料至財務會計系統:', contractData);
+                return { success: true, message: '財務資料已同步' };
+            }
+        };
+        
+        // 初始化系統
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('專案管理系統 - 合約管理子系統已啟動');
+            console.log('系統版本：v2.0');
+            console.log('已連結子系統：');
+            console.log('- 工程進度子系統 [API Ready]');
+            console.log('- 廠商報價子系統 [API Ready]');
+            console.log('- 材料庫存子系統 [API Ready]');
+            console.log('- 品質管理子系統 [API Ready]');
+            console.log('- 設計資源子系統 [Planned]');
+            console.log('- 客戶關係子系統 [Planned]');
+            console.log('- 人力資源子系統 [Planned]');
+            console.log('- 財務會計系統 [External API Ready]');
+            
+            // 模擬即時資料更新
+            setInterval(function() {
+                const indicator = document.querySelector('.api-indicator');
+                indicator.style.background = '#4caf50';
+            }, 5000);
+        });
+        
+        // 點擊模態框外部關閉
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
