@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專案詳情 - 佐佐木賢室內裝修設計會計系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif;
+        }
+        
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: white;
+            padding: 12px 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .nav-title {
+            font-size: 18px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        
+        .nav-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #374151;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .project-header {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .project-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .project-title h1 {
+            font-size: 24px;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .project-code {
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        
+        .project-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .info-value {
+            color: #1e293b;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .info-value.amount {
+            color: #0891b2;
+            font-weight: 600;
+        }
+        
+        .tabs {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        
+        .tabs-nav {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .tab-btn.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+            background: white;
+        }
+        
+        .tab-content {
+            padding: 24px;
+            min-height: 400px;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .section-title {
+            color: #1e293b;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .contract-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .contract-item {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .contract-item .label {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        
+        .contract-item .value {
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .payment-table thead {
+            background: #f8fafc;
+        }
+        
+        .payment-table th,
+        .payment-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+        
+        .payment-table th {
+            color: #475569;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .payment-table td {
+            color: #1e293b;
+        }
+        
+        .payment-table tbody tr:hover {
+            background: #f8fafc;
+        }
+        
+        .status-paid {
+            color: #059669;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            color: #d97706;
+            font-weight: 500;
+        }
+        
+        .status-unpaid {
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+            border: none;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .btn-info {
+            background: #0891b2;
+            color: white;
+            border: none;
+        }
+        
+        .btn-info:hover {
+            background: #0e7490;
+        }
+        
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+            border: none;
+        }
+        
+        .btn-warning:hover {
+            background: #d97706;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #10b981;
+            width: 65%;
+            transition: width 0.3s;
+        }
+        
+        .vendor-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .vendor-item {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .vendor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .vendor-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .vendor-amount {
+            color: #0891b2;
+            font-weight: 600;
+        }
+        
+        .vendor-details {
+            color: #64748b;
+            font-size: 13px;
+        }
+        
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 16px;
+        }
+        
+        .document-item {
+            text-align: center;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .document-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        .document-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .document-name {
+            font-size: 12px;
+            color: #475569;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .project-info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .tabs-nav {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 100px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">佐</div>
+            <div class="nav-title">專案詳情</div>
+        </div>
+        <div class="nav-right">
+            <button class="btn" onclick="history.back()">返回</button>
+            <button class="btn btn-primary" onclick="goHome()">主目錄</button>
+            <button class="btn">管理員</button>
+            <button class="btn" onclick="handleLogout()">登出</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="project-header">
+            <div class="project-title">
+                <div>
+                    <h1>台中建設辦公室裝修</h1>
+                    <div class="project-code">專案編號：P20240115001</div>
+                </div>
+                <div class="status-badge">施工中</div>
+            </div>
+            
+            <div class="project-info-grid">
+                <div class="info-item">
+                    <div class="info-label">客戶名稱</div>
+                    <div class="info-value">台中建設公司</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">專案類別</div>
+                    <div class="info-value">商業空間 / 辦公室</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">合約金額</div>
+                    <div class="info-value amount">NT$ 3,500,000</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">開始日期</div>
+                    <div class="info-value">2024/01/15</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">預計完工</div>
+                    <div class="info-value">2024/04/30</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">專案經理</div>
+                    <div class="info-value">王經理</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">設計師</div>
+                <div class="info-value">張設計師</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">設計助理</div>
+                <div class="info-value">李助理</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">工程進度</div>
+                <div class="info-value">65%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab(event, 'contract')">合約管理</button>
+                <button class="tab-btn" onclick="switchTab(event, 'schedule')">工程明細</button>
+                <button class="tab-btn" onclick="switchTab(event, 'vendor')">廠商報價</button>
+                <button class="tab-btn" onclick="switchTab(event, 'payment')">請款紀錄</button>
+                <button class="tab-btn" onclick="switchTab(event, 'document')">相關文件</button>
+            </div>
+            
+            <div class="tab-content">
+                <div id="contract" class="tab-panel active">
+                    <div class="section-title">合約資訊</div>
+                    
+                    <div class="contract-grid">
+                        <div class="contract-item">
+                            <div class="label">合約編號</div>
+                            <div class="value">CT-2024-0115</div>
+                        </div>
+                        <div class="contract-item">
+                            <div class="label">簽約日期</div>
+                            <div class="value">2024/01/10</div>
+                        </div>
+                        <div class="contract-item">
+                            <div class="label">合約金額</div>
+                            <div class="value">NT$ 3,500,000</div>
+                        </div>
+                        <div class="contract-item">
+                            <div class="label">付款條件</div>
+                            <div class="value">3-3-3-1</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">付款階段</div>
+                    
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>期別</th>
+                                <th>付款條件</th>
+                                <th>金額</th>
+                                <th>付款日期</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>第一期</td>
+                                <td>簽約款 (30%)</td>
+                                <td>NT$ 1,050,000</td>
+                                <td>2024/01/15</td>
+                                <td><span class="status-paid">✓ 已收款</span></td>
+                            </tr>
+                            <tr>
+                                <td>第二期</td>
+                                <td>開工款 (30%)</td>
+                                <td>NT$ 1,050,000</td>
+                                <td>2024/02/01</td>
+                                <td><span class="status-paid">✓ 已收款</span></td>
+                            </tr>
+                            <tr>
+                                <td>第三期</td>
+                                <td>期中款 (30%)</td>
+                                <td>NT$ 1,050,000</td>
+                                <td>2024/03/15</td>
+                                <td><span class="status-pending">⏳ 待收款</span></td>
+                            </tr>
+                            <tr>
+                                <td>實收期</td>
+                                <td>尾款 (10%)</td>
+                                <td>NT$ 350,000</td>
+                                <td>2024/04/30</td>
+                                <td><span class="status-unpaid">○ 未到期</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success">整更合約</button>
+                        <button class="btn btn-info">下載合約</button>
+                        <button class="btn btn-warning">整更報去</button>
+                    </div>
+                </div>
+                
+                <div id="engineering" class="tab-panel">
+                    <div class="section-title">工程項目明細</div>
+                    
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>工程項目</th>
+                                <th>規格說明</th>
+                                <th>數量</th>
+                                <th>單位</th>
+                                <th>單價</th>
+                                <th>小計</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>拆除工程</td>
+                                <td>舊有隔間牆拆除、地板拆除</td>
+                                <td>1</td>
+                                <td>式</td>
+                                <td>NT$ 150,000</td>
+                                <td>NT$ 150,000</td>
+                            </tr>
+                            <tr>
+                                <td>水電工程</td>
+                                <td>配電盤更新、插座配線、給排水管路</td>
+                                <td>1</td>
+                                <td>式</td>
+                                <td>NT$ 380,000</td>
+                                <td>NT$ 380,000</td>
+                            </tr>
+                            <tr>
+                                <td>泥作工程</td>
+                                <td>地面整平、牆面粉刷、磁磚舖設</td>
+                                <td>200</td>
+                                <td>坪</td>
+                                <td>NT$ 2,500</td>
+                                <td>NT$ 500,000</td>
+                            </tr>
+                            <tr>
+                                <td>木作工程</td>
+                                <td>天花板造型、系統櫃製作、木地板</td>
+                                <td>150</td>
+                                <td>坪</td>
+                                <td>NT$ 4,000</td>
+                                <td>NT$ 600,000</td>
+                            </tr>
+                            <tr>
+                                <td>油漆工程</td>
+                                <td>牆面油漆、天花板塗裝</td>
+                                <td>300</td>
+                                <td>坪</td>
+                                <td>NT$ 800</td>
+                                <td>NT$ 240,000</td>
+                            </tr>
+                            <tr>
+                                <td>清潔工程</td>
+                                <td>施工清潔、細部清潔、交屋清潔</td>
+                                <td>1</td>
+                                <td>式</td>
+                                <td>NT$ 50,000</td>
+                                <td>NT$ 50,000</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style="background: #f8fafc; font-weight: 600;">
+                                <td colspan="5" style="text-align: right; padding-right: 16px;">工程總計：</td>
+                                <td style="color: #0891b2;">NT$ 1,920,000</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <div style="margin-top: 20px;">
+                        <div class="section-title">材料明細</div>
+                        <table class="payment-table">
+                            <thead>
+                                <tr>
+                                    <th>材料名稱</th>
+                                    <th>品牌型號</th>
+                                    <th>數量</th>
+                                    <th>單位</th>
+                                    <th>單價</th>
+                                    <th>小計</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>拋光石英磚</td>
+                                    <td>冠軍磁磚 CM8001</td>
+                                    <td>120</td>
+                                    <td>片</td>
+                                    <td>NT$ 180</td>
+                                    <td>NT$ 21,600</td>
+                                </tr>
+                                <tr>
+                                    <td>系統櫃板材</td>
+                                    <td>EGGER E1V313板材</td>
+                                    <td>50</td>
+                                    <td>片</td>
+                                    <td>NT$ 1,200</td>
+                                    <td>NT$ 60,000</td>
+                                </tr>
+                                <tr>
+                                    <td>LED吸頂燈</td>
+                                    <td>飛利浦 31171</td>
+                                    <td>20</td>
+                                    <td>組</td>
+                                    <td>NT$ 2,500</td>
+                                    <td>NT$ 50,000</td>
+                                </tr>
+                                <tr>
+                                    <td>乳膠漆</td>
+                                    <td>立邦漆 5合1</td>
+                                    <td>15</td>
+                                    <td>桶</td>
+                                    <td>NT$ 1,800</td>
+                                    <td>NT$ 27,000</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr style="background: #f8fafc; font-weight: 600;">
+                                    <td colspan="5" style="text-align: right; padding-right: 16px;">材料總計：</td>
+                                    <td style="color: #0891b2;">NT$ 158,600</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success">新增工程項目</button>
+                        <button class="btn btn-primary">修改明細</button>
+                        <button class="btn btn-info">列印明細表</button>
+                    </div>
+                </div>
+                
+                <div id="schedule" class="tab-panel">
+                    <div class="section-title">工程進度明細</div>
+                    
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>工程項目</th>
+                                <th>預定開始</th>
+                                <th>預定完成</th>
+                                <th>實際進度</th>
+                                <th>負責工班</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>拆除工程</td>
+                                <td>2024/01/16</td>
+                                <td>2024/01/25</td>
+                                <td>100%</td>
+                                <td>拆除工班A</td>
+                                <td><span class="status-paid">✓ 完成</span></td>
+                            </tr>
+                            <tr>
+                                <td>水電工程</td>
+                                <td>2024/01/26</td>
+                                <td>2024/02/15</td>
+                                <td>100%</td>
+                                <td>水電工班B</td>
+                                <td><span class="status-paid">✓ 完成</span></td>
+                            </tr>
+                            <tr>
+                                <td>泥作工程</td>
+                                <td>2024/02/16</td>
+                                <td>2024/03/10</td>
+                                <td>85%</td>
+                                <td>泥作工班C</td>
+                                <td><span class="status-pending">⏳ 進行中</span></td>
+                            </tr>
+                            <tr>
+                                <td>木作工程</td>
+                                <td>2024/03/11</td>
+                                <td>2024/04/05</td>
+                                <td>30%</td>
+                                <td>木作工班D</td>
+                                <td><span class="status-pending">⏳ 進行中</span></td>
+                            </tr>
+                            <tr>
+                                <td>油漆工程</td>
+                                <td>2024/04/06</td>
+                                <td>2024/04/20</td>
+                                <td>0%</td>
+                                <td>油漆工班E</td>
+                                <td><span class="status-unpaid">○ 未開始</span></td>
+                            </tr>
+                            <tr>
+                                <td>清潔驗收</td>
+                                <td>2024/04/21</td>
+                                <td>2024/04/30</td>
+                                <td>0%</td>
+                                <td>清潔公司</td>
+                                <td><span class="status-unpaid">○ 未開始</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">更新進度</button>
+                        <button class="btn btn-info">工程日誌</button>
+                        <button class="btn">列印進度表</button>
+                    </div>
+                </div>
+                
+                <div id="vendor" class="tab-panel">
+                    <div class="section-title">廠商報價比較</div>
+                    
+                    <div class="vendor-list">
+                        <div class="vendor-item">
+                            <div class="vendor-header">
+                                <div class="vendor-name">建材供應商A</div>
+                                <div class="vendor-amount">NT$ 850,000</div>
+                            </div>
+                            <div class="vendor-details">磁磚、衛浴設備、五金配件 | 報價日期：2024/01/05</div>
+                        </div>
+                        
+                        <div class="vendor-item">
+                            <div class="vendor-header">
+                                <div class="vendor-name">家具訂製廠B</div>
+                                <div class="vendor-amount">NT$ 450,000</div>
+                            </div>
+                            <div class="vendor-details">辦公桌椅、收納櫃、會議桌 | 報價日期：2024/01/08</div>
+                        </div>
+                        
+                        <div class="vendor-item">
+                            <div class="vendor-header">
+                                <div class="vendor-name">空調設備商C</div>
+                                <div class="vendor-amount">NT$ 320,000</div>
+                            </div>
+                            <div class="vendor-details">中央空調系統、換氣設備 | 報價日期：2024/01/10</div>
+                        </div>
+                        
+                        <div class="vendor-item">
+                            <div class="vendor-header">
+                                <div class="vendor-name">照明設備商D</div>
+                                <div class="vendor-amount">NT$ 180,000</div>
+                            </div>
+                            <div class="vendor-details">LED燈具、智能照明系統 | 報價日期：2024/01/12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success">新增廠商</button>
+                        <button class="btn btn-primary">比價分析</button>
+                        <button class="btn btn-info">採購決策</button>
+                    </div>
+                </div>
+                
+                <div id="payment" class="tab-panel">
+                    <div class="section-title">請款紀錄</div>
+                    
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>請款日期</th>
+                                <th>請款項目</th>
+                                <th>請款金額</th>
+                                <th>發票號碼</th>
+                                <th>收款日期</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024/01/15</td>
+                                <td>簽約款</td>
+                                <td>NT$ 1,050,000</td>
+                                <td>AB12345678</td>
+                                <td>2024/01/17</td>
+                                <td><span class="status-paid">✓ 已收款</span></td>
+                            </tr>
+                            <tr>
+                                <td>2024/02/01</td>
+                                <td>開工款</td>
+                                <td>NT$ 1,050,000</td>
+                                <td>AB23456789</td>
+                                <td>2024/02/03</td>
+                                <td><span class="status-paid">✓ 已收款</span></td>
+                            </tr>
+                            <tr>
+                                <td>2024/03/15</td>
+                                <td>期中款</td>
+                                <td>NT$ 1,050,000</td>
+                                <td>AB34567890</td>
+                                <td>-</td>
+                                <td><span class="status-pending">⏳ 請款中</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success">新增請款</button>
+                        <button class="btn btn-primary">列印請款單</button>
+                        <button class="btn btn-info">收款確認</button>
+                    </div>
+                </div>
+                
+                <div id="document" class="tab-panel">
+                    <div class="section-title">相關文件</div>
+                    
+                    <div class="document-grid">
+                        <div class="document-item" onclick="viewDocument('contract')">
+                            <div class="document-icon">📋</div>
+                            <div class="document-name">設計合約</div>
+                        </div>
+                        
+                        <div class="document-item" onclick="viewDocument('plan')">
+                            <div class="document-icon">📐</div>
+                            <div class="document-name">設計圖面</div>
+                        </div>
+                        
+                        <div class="document-item" onclick="viewDocument('3d')">
+                            <div class="document-icon">🏗</div>
+                            <div class="document-name">3D圖檔</div>
+                        </div>
+                        
+                        <div class="document-item" onclick="viewDocument('photo')">
+                            <div class="document-icon">📸</div>
+                            <div class="document-name">施工照片</div>
+                        </div>
+                        
+                        <div class="document-item" onclick="viewDocument('permit')">
+                            <div class="document-icon">🏛</div>
+                            <div class="document-name">施工許可</div>
+                        </div>
+                        
+                        <div class="document-item" onclick="viewDocument('invoice')">
+                            <div class="document-icon">🧾</div>
+                            <div class="document-name">發票明細</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success">上傳文件</button>
+                        <button class="btn btn-primary">文件管理</button>
+                        <button class="btn btn-info">下載全部</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(event, tabId) {
+            // 移除所有活動狀態
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 設置新的活動狀態
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        function goHome() {
+            if (confirm('確定要返回主控制台嗎？')) {
+                alert('返回主控制台\n\n佐佐木賢室內裝修設計會計系統');
+            }
+        }
+        
+        function handleLogout() {
+            if (confirm('確定要登出系統嗎？')) {
+                alert('已成功登出系統');
+            }
+        }
+        
+        function viewDocument(type) {
+            const docNames = {
+                'contract': '設計合約',
+                'plan': '設計圖面',
+                '3d': '3D圖檔',
+                'photo': '施工照片',
+                'permit': '施工許可',
+                'invoice': '發票明細'
+            };
+            
+            alert(`正在開啟：${docNames[type]}\n\n文件將在新視窗中開啟...`);
+        }
+        
+        function showEngineeringAmount() {
+            alert('正在開啟工程金額明細...\n\n將顯示詳細的工程項目金額、材料費用、人工成本等資訊');
+        }
+        
+        // 頁面載入完成後的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('佐佐木賢專案詳情系統載入完成');
+            console.log('專案編號：P20240115001');
+            console.log('系統整合狀態：客戶管理✓ 廠商管理✓ 財務管理✓ 員工管理✓');
+        });
+    </script>
+</body>
+</html>
