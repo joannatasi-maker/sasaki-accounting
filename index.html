@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +25,7 @@
             border-radius: 24px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 440px;
+            max-width: 500px;
             padding: 40px;
         }
         .logo-section {
@@ -105,23 +106,36 @@
             font-size: 14px;
             margin-bottom: 15px;
         }
+        .role-section {
+            margin-bottom: 15px;
+        }
+        .role-title {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
         .quick-buttons {
-            display: flex;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .quick-btn {
-            flex: 1;
-            padding: 10px;
+            padding: 8px 12px;
             border: 1px solid #e5e7eb;
             background: white;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.3s ease;
+            text-align: center;
         }
         .quick-btn:hover {
             background: #f3f4f6;
             border-color: #2563EB;
+            transform: translateY(-1px);
         }
         .error-msg {
             display: none;
@@ -132,6 +146,24 @@
             margin-bottom: 16px;
             font-size: 14px;
         }
+        .info-section {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        .info-title {
+            font-size: 12px;
+            color: #0369a1;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .info-content {
+            font-size: 11px;
+            color: #0284c7;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -139,7 +171,7 @@
         <div class="logo-section">
             <div class="logo">佐</div>
             <div class="company-name">佐佐木賢室內裝修設計</div>
-            <div class="company-subtitle">會計管理系統 v1.0</div>
+            <div class="company-subtitle">會計管理系統 v2.0</div>
         </div>
         
         <div id="errorMsg" class="error-msg">帳號或密碼錯誤</div>
@@ -160,24 +192,90 @@
         
         <div class="quick-login">
             <div class="quick-title">快速測試登入</div>
-            <div class="quick-buttons">
-                <button class="quick-btn" onclick="quickLogin('admin')">老闆</button>
-                <button class="quick-btn" onclick="quickLogin('user')">員工</button>
-                <button class="quick-btn" onclick="quickLogin('demo')">示範</button>
+            
+            <!-- 管理層 -->
+            <div class="role-section">
+                <div class="role-title">🏆 管理層</div>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="quickLogin('admin')">管理者</button>
+                    <button class="quick-btn" onclick="quickLogin('boss')">老闆</button>
+                </div>
+            </div>
+
+            <!-- 設計部門 -->
+            <div class="role-section">
+                <div class="role-title">🎨 設計部門</div>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="quickLogin('designer01')">王美琪</button>
+                    <button class="quick-btn" onclick="quickLogin('designer02')">李志豪</button>
+                    <button class="quick-btn" onclick="quickLogin('designer03')">張雅婷</button>
+                    <button class="quick-btn" onclick="quickLogin('assistant01')">黃小芳</button>
+                </div>
+            </div>
+
+            <!-- 財務部門 -->
+            <div class="role-section">
+                <div class="role-title">💰 財務部門</div>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="quickLogin('accountant01')">會計主管</button>
+                    <button class="quick-btn" onclick="quickLogin('accountant02')">會計</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">測試帳號說明</div>
+            <div class="info-content">
+                • 管理者：admin / 123456<br>
+                • 設計師：designer01 / design123<br>
+                • 會計：accountant01 / acc123<br>
+                • 其他帳號統一密碼：123456
             </div>
         </div>
     </div>
 
     <script>
+        // 使用者帳號密碼資料庫
+        const userCredentials = {
+            // 管理層
+            'admin': { password: '123456', userData: { fullName: '佐佐木賢', role: '管理者', department: '管理部' }},
+            'boss': { password: '123456', userData: { fullName: '執行長', role: '老闆', department: '董事會' }},
+            
+            // 設計師
+            'designer01': { password: 'design123', userData: { fullName: '王美琪', role: '資深設計師', department: '設計部' }},
+            'designer02': { password: '123456', userData: { fullName: '李志豪', role: '設計師', department: '設計部' }},
+            'designer03': { password: '123456', userData: { fullName: '張雅婷', role: '設計師', department: '設計部' }},
+            'designer04': { password: '123456', userData: { fullName: '陳建明', role: '設計師', department: '設計部' }},
+            'designer05': { password: '123456', userData: { fullName: '林佳慧', role: '設計師', department: '設計部' }},
+            
+            // 設計助理
+            'assistant01': { password: '123456', userData: { fullName: '黃小芳', role: '設計助理', department: '設計部' }},
+            'assistant02': { password: '123456', userData: { fullName: '劉志偉', role: '設計助理', department: '設計部' }},
+            
+            // 會計
+            'accountant01': { password: 'acc123', userData: { fullName: '吳淑芬', role: '會計主管', department: '財務部' }},
+            'accountant02': { password: '123456', userData: { fullName: '鄭雅玲', role: '會計', department: '財務部' }}
+        };
+
         function doLogin(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            if (username === 'admin' && password === '123456') {
+            // 檢查帳號密碼
+            const userInfo = userCredentials[username];
+            if (userInfo && userInfo.password === password) {
+                // 登入成功，儲存使用者資訊
                 localStorage.setItem('user', username);
+                localStorage.setItem('userInfo', JSON.stringify(userInfo.userData));
+                
+                // 顯示登入成功訊息
+                alert(`登入成功！歡迎 ${userInfo.userData.fullName} (${userInfo.userData.role})`);
+                
+                // 跳轉到主控制台
                 window.location.href = 'dashboard.html';
             } else {
+                // 登入失敗
                 document.getElementById('errorMsg').style.display = 'block';
                 setTimeout(() => {
                     document.getElementById('errorMsg').style.display = 'none';
@@ -186,14 +284,24 @@
             return false;
         }
         
-        function quickLogin(type) {
-            document.getElementById('username').value = 'admin';
-            document.getElementById('password').value = '123456';
-            doLogin(event);
+        function quickLogin(username) {
+            const userInfo = userCredentials[username];
+            if (userInfo) {
+                document.getElementById('username').value = username;
+                document.getElementById('password').value = userInfo.password;
+                
+                // 自動執行登入
+                setTimeout(() => {
+                    doLogin({ preventDefault: () => {} });
+                }, 100);
+            }
         }
+
+        // 頁面載入時清除之前的登入狀態
+        document.addEventListener('DOMContentLoaded', function() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('userInfo');
+        });
     </script>
 </body>
 </html>
-
-
-
