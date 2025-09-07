@@ -655,17 +655,28 @@
             }
         }
 
-        function openModule(module) {
-            const moduleMap = {
-                'customer': '客戶管理系統',
-                'project': '專案管理系統',
-                'vendor': '廠商管理系統',
-                'employee': '員工管理系統',
-                'finance': '財務管理系統',
-                'approval': '電子簽核中心'
-            };
-            alert('打開：' + (moduleMap[module] || module));
-        }
+        switch(module) {
+    case 'project':
+        window.location.href = 'project-detail.html';
+        break;
+    case 'customer':
+        alert('打開：客戶管理系統');
+        break;
+    case 'vendor':
+        alert('打開：廠商管理系統');
+        break;
+    case 'employee':
+        alert('打開：員工管理系統');
+        break;
+    case 'finance':
+        alert('打開：財務管理系統');
+        break;
+    case 'approval':
+        alert('打開：電子簽核中心');
+        break;
+    default:
+        alert('打開：' + module);
+}
 
         function quickAction(action) {
             const actionMap = {
@@ -688,3 +699,4 @@
     </script>
 </body>
 </html>
+
