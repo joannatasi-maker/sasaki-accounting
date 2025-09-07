@@ -641,62 +641,65 @@
     </div>
 
     <script>
-        function goBack() {
-            alert('返回上一頁');
-        }
-
-        function goHome() {
-            alert('重新載入主頁面');
-        }
-
-        function logout() {
-            if (confirm('確定要登出嗎？')) {
-                alert('已登出系統');
-            }
-        }
-
-        switch(module) {
-    case 'project':
-        window.location.href = 'project-detail.html';
-        break;
-    case 'customer':
-        alert('打開：客戶管理系統');
-        break;
-    case 'vendor':
-        alert('打開：廠商管理系統');
-        break;
-    case 'employee':
-        alert('打開：員工管理系統');
-        break;
-    case 'finance':
-        alert('打開：財務管理系統');
-        break;
-    case 'approval':
-        alert('打開：電子簽核中心');
-        break;
-    default:
-        alert('打開：' + module);
+   function goBack() {
+    alert('返回上一頁');
 }
 
-        function quickAction(action) {
-            const actionMap = {
-                'invoice': '開立發票',
-                'payment': '收款登記',
-                'expense': '支出記錄',
-                'newproject': '新增專案 🎉',
-                'approval': '電子簽核',
-                'report': '報表分析',
-                'newcustomer': '新增客戶',
-                'forms': '各式表單 📋',
-                'settings': '系統設定'
-            };
-            alert('執行快速操作：' + (actionMap[action] || action));
-        }
+function goHome() {
+    alert('重新載入主頁面');
+}
 
-        function handleTodo(type) {
-            alert('處理待辦事項：' + type);
-        }
+function logout() {
+    if (confirm('確定要登出嗎？')) {
+        alert('已登出系統');
+    }
+}
+
+function openModule(module) {
+    switch(module) {
+        case 'project':
+            window.location.href = 'project-detail.html';
+            break;
+        case 'customer':
+            alert('打開：客戶管理系統');
+            break;
+        case 'vendor':
+            alert('打開：廠商管理系統');
+            break;
+        case 'employee':
+            alert('打開：員工管理系統');
+            break;
+        case 'finance':
+            alert('打開：財務管理系統');
+            break;
+        case 'approval':
+            alert('打開：電子簽核中心');
+            break;
+        default:
+            alert('打開：' + module);
+    }
+}
+
+function quickAction(action) {
+    const actionMap = {
+        'invoice': '開立發票',
+        'payment': '收款登記',
+        'expense': '支出記錄',
+        'newproject': '新增專案 🎉',
+        'approval': '電子簽核',
+        'report': '報表分析',
+        'newcustomer': '新增客戶',
+        'forms': '各式表單 📋',
+        'settings': '系統設定'
+    };
+    alert('執行快速操作：' + (actionMap[action] || action));
+}
+
+function handleTodo(type) {
+    alert('處理待辦事項：' + type);
+}
     </script>
 </body>
 </html>
+
 
